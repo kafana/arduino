@@ -10,6 +10,10 @@ http://www.co2meter.com/collections/co2-sensors/products/cozir-co2-temperature-h
 
 http://www.co2meters.com/Documentation/AppNotes/AN128-%20Cozir_Arduino.pdf
 
+### HD4478 Character Builder
+
+http://www.quinapalus.com/hd44780udg.html
+
 ### Temp, Humidity CO2 sensor and library (a bunch of useful info about Cosir sensor) 
 
 http://forum.arduino.cc/index.php?topic=91467.0
