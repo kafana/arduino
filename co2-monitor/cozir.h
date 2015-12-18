@@ -17,7 +17,7 @@
 #include "Arduino.h"
 #include "SoftwareSerial.h"
 
-#define COZIR_LIB_VERSION "0.1.06"
+#define COZIR_LIB_VERSION "0.1.07"
 
 // OUTPUTFIELDS
 // See datasheet for details.
@@ -60,6 +60,12 @@ public:
     float Light();
     uint32_t CO2();
 
+    void ReadAll();
+    float ra_Celsius();
+    float ra_Fahrenheit();
+    float ra_Humidity();
+    uint32_t ra_CO2();
+
     uint16_t FineTuneZeroPoint(uint16_t , uint16_t);
     uint16_t CalibrateFreshAir();
     uint16_t CalibrateNitrogen();
@@ -82,7 +88,10 @@ public:
 
 private:
     Stream *ser;
-    char buffer[20];
+    char buffer[30];
+    float ra_temperature = 0.0;
+    float ra_humidity = 0.0;
+    uint32_t ra_co2 = 0.0;
 
     void SetOperatingMode(uint8_t mode);
     void Command(const char* );
