@@ -1,6 +1,7 @@
 /*
-  This sketch connects will connect to a COZIR ambient sensor
-  and report readings back to the host computer over usb.
+  This sketch connects to a COZIR ambient sensor
+  and report readings back to RGB LCD and the 
+  host computer over usb.
      
     Arduino                 COZIR Sensor
   ================================
