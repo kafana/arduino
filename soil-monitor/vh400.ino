@@ -25,7 +25,7 @@
 // Last-updated: 2015-07-04
 // https://gist.github.com/lx-88/413b48ced6b79300ea76
 
-float readVH400(int analogPin) {
+float readVH400(int analogPin, float reference) {
   // This function returns Volumetric Water Content by converting the analogPin value to voltage
   // and then converting voltage to VWC using the piecewise regressions provided by the manufacturer
   // at http://www.vegetronix.com/Products/VH400/VH400-Piecewise-Curve.phtml
@@ -33,14 +33,21 @@ float readVH400(int analogPin) {
   // NOTE: You need to set analogPin to input in your setup block
   //   ex. pinMode(<analogPin>, INPUT);
   //   replace <analogPin> with the number of the pin you're going to read from.
-  
+
   // Read value and convert to voltage  
   int sensor1DN = analogRead(analogPin);
-  float sensorVoltage = sensor1DN*(3.0 / 1023.0);
+  float sensorVoltage = sensor1DN*(reference / 1023.0);
+
+  String prefix = "V: ";
+  String out = prefix + sensorVoltage;
+  Serial.println(out);
+  
   float VWC;
   
   // Calculate VWC
-  if(sensorVoltage <= 1.1) {
+  if (sensorVoltage == 0) {
+    VWC = 0;
+  } else if (sensorVoltage > 0 && sensorVoltage <= 1.1) {
     VWC = 10*sensorVoltage-1;
   } else if(sensorVoltage > 1.1 && sensorVoltage <= 1.3) {
     VWC = 25*sensorVoltage-17.5;
@@ -61,7 +68,7 @@ struct VH400 {
   double VWC_sd;
 };
 
-struct VH400 readVH400_wStats(int analogPin, int nMeasurements = 100, int delayBetweenMeasurements = 50) {
+struct VH400 readVH400_wStats(int analogPin, int nMeasurements = 100, int delayBetweenMeasurements = 50, float reference = 5.0) {
   // This variant calculates the mean and standard deviation of 100 measurements over 5 seconds.
   // It reports mean and standard deviation for the analog value, voltage, and WVC.
   
@@ -92,7 +99,7 @@ struct VH400 readVH400_wStats(int analogPin, int nMeasurements = 100, int delayB
   for (int i = 0; i < nMeasurements; i++) { 
     // Read value and convert to voltage 
     int sensorDN = analogRead(analogPin);
-    double sensorVoltage = sensorDN*(3.0 / 1023.0);
+    double sensorVoltage = sensorDN*(reference / 1023.0);
         
     // Calculate VWC
     float VWC;
